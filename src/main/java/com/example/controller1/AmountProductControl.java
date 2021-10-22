@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.controller1;
 
 import com.mysql.cj.util.StringUtils;
 
@@ -10,33 +10,48 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/remove"})
-public class RemoveProductCartControl extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/change"})
+public class AmountProductControl extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String id = req.getParameter("id");
+        String amount = req.getParameter("amount");
+        String productId = req.getParameter("id");
+
+        if (Integer.parseInt(amount) <= 0) {
+            amount = "1";
+        }
+
         Cookie arr[] = req.getCookies();
         String result = "";
+
         for (Cookie o : arr) {
 
-            if ("id".equals(o.getName())) {
+            if ("cart".equals(o.getName())) {
 
                 if (!StringUtils.isNullOrEmpty(o.getValue())) {
 
                     String txt[] = o.getValue().split("-");
                     o.setMaxAge(0);
                     resp.addCookie(o);
+                    int flag = 0;
                     for (String s : txt) {
-                        if (!id.equals(s)) {
+                        if (!productId.equals(s)) {
                             result += s + "-";
+                        }
+                        if (productId.equals(s) && flag == 0) {
+                            flag++;
+                            for (int i = 1; i <= Integer.parseInt(amount); i++) {
+                                result = result + productId + "-" ;
+                            }
                         }
                     }
                 }
             }
         }
-        Cookie c = new Cookie("id", result);
+
+        Cookie c = new Cookie("cart", result);
         c.setMaxAge(60 * 60 * 24);
         resp.addCookie(c);
         resp.sendRedirect("print");
