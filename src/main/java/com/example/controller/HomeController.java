@@ -4,6 +4,7 @@ import com.example.model.Category;
 import com.example.model.Product;
 import com.example.service.CategoryService;
 import com.example.service.ProductService;
+import com.mysql.cj.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,11 +29,16 @@ public class HomeController extends HttpServlet {
         Cookie arr[] = req.getCookies();
         int amount = 0;
         for (Cookie o : arr) {
-            if (o.getName().equals("id")) {
-                String[] txt = o.getValue().split("-");
-                for (String s : txt) {
-                    if (!s.equals("")) {
-                        amount++;
+
+            if ("id".equals(o.getName())) {
+
+                if (!StringUtils.isNullOrEmpty(o.getValue())) {
+
+                    String[] txt = o.getValue().split("-");
+                    for (String s : txt) {
+                        if (!"".equals(s)) {
+                            amount++;
+                        }
                     }
                 }
             }
