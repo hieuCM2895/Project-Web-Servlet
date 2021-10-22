@@ -1,5 +1,7 @@
 package com.example.controller1;
 
+import com.mysql.cj.util.StringUtils;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -16,21 +18,30 @@ public class CartProductControl extends HttpServlet {
 
         resp.setCharacterEncoding("UTF-8");
         req.setCharacterEncoding("UTF-8");
+
         String productId = req.getParameter("id");
         Cookie arr[] = req.getCookies();
         String txt = "";
+
         for (Cookie o : arr) {
-            if (o.getName().equals("cart")) {
-                txt = txt + o.getValue();
-                o.setMaxAge(0);
-                resp.addCookie(o);
+
+            if ("cart".equals(o.getName())) {
+
+                if (!StringUtils.isNullOrEmpty(o.getValue())) {
+
+                    txt = txt + o.getValue();
+                    o.setMaxAge(0);
+                    resp.addCookie(o);
+                }
             }
         }
+        
         if (txt.isEmpty()) {
             txt = productId;
         } else {
             txt = txt + "-" + productId;
         }
+
         Cookie c = new Cookie("cart", txt);
         c.setMaxAge(60 * 60 * 24);
         resp.addCookie(c);
