@@ -1,5 +1,7 @@
 package com.example.controller1;
 
+import com.mysql.cj.util.StringUtils;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -25,19 +27,24 @@ public class AmountProductControl extends HttpServlet {
         String result = "";
 
         for (Cookie o : arr) {
-            if (o.getName().equals("cart")) {
-                String txt[] = o.getValue().split("-");
-                o.setMaxAge(0);
-                resp.addCookie(o);
-                int flag = 0;
-                for (String s : txt) {
-                    if (!s.equals(productId)) {
-                        result += s + "-";
-                    }
-                    if (s.equals(productId) && flag == 0) {
-                        flag++;
-                        for (int i = 1; i <= Integer.parseInt(amount); i++) {
-                            result = result + productId + "-" ;
+
+            if ("cart".equals(o.getName())) {
+
+                if (!StringUtils.isNullOrEmpty(o.getValue())) {
+
+                    String txt[] = o.getValue().split("-");
+                    o.setMaxAge(0);
+                    resp.addCookie(o);
+                    int flag = 0;
+                    for (String s : txt) {
+                        if (!productId.equals(s)) {
+                            result += s + "-";
+                        }
+                        if (productId.equals(s) && flag == 0) {
+                            flag++;
+                            for (int i = 1; i <= Integer.parseInt(amount); i++) {
+                                result = result + productId + "-" ;
+                            }
                         }
                     }
                 }
