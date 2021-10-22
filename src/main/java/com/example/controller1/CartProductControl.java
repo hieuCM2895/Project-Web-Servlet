@@ -1,11 +1,14 @@
-package com.example.controller;
+package com.example.controller1;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/cart"})
+@WebServlet(urlPatterns = {"/home/cart"})
 public class CartProductControl extends HttpServlet {
 
     @Override
@@ -17,7 +20,7 @@ public class CartProductControl extends HttpServlet {
         Cookie arr[] = req.getCookies();
         String txt = "";
         for (Cookie o : arr) {
-            if ("id".equals(o.getName())) {
+            if (o.getName().equals("cart")) {
                 txt = txt + o.getValue();
                 o.setMaxAge(0);
                 resp.addCookie(o);
@@ -28,11 +31,10 @@ public class CartProductControl extends HttpServlet {
         } else {
             txt = txt + "-" + productId;
         }
-        Cookie c = new Cookie("id", txt);
+        Cookie c = new Cookie("cart", txt);
         c.setMaxAge(60 * 60 * 24);
         resp.addCookie(c);
         resp.sendRedirect("print");
 
     }
-
 }
