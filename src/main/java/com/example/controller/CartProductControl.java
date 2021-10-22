@@ -17,7 +17,7 @@ public class CartProductControl extends HttpServlet {
         Cookie arr[] = req.getCookies();
         String txt = "";
         for (Cookie o : arr) {
-            if (o.getName().equals("id")) {
+            if ("id".equals(o.getName())) {
                 txt = txt + o.getValue();
                 o.setMaxAge(0);
                 resp.addCookie(o);
