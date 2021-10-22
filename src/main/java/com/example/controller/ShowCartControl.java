@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.model.Product;
 import com.example.service.ProductService;
+import com.mysql.cj.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,13 +26,18 @@ public class ShowCartControl extends HttpServlet {
         List<Product> list = new ArrayList<>();
         ProductService productService = new ProductService();
         for (Cookie o : arr) {
-            if (o.getName().equals("id")) {
-                String txt[] = o.getValue().split("-");
-                for (String s : txt) {
-                    if (s.equals("")) {
-                        continue;
+
+            if ("id".equals(o.getName())) {
+
+                if (!StringUtils.isNullOrEmpty(o.getValue())) {
+
+                    String txt[] = o.getValue().split("-");
+                    for (String s : txt) {
+                        if ("".equals(s)) {
+                            continue;
+                        }
+                        list.add(productService.findProductById(Integer.parseInt(s)));
                     }
-                    list.add(productService.findProductById(Integer.parseInt(s)));
                 }
             }
         }
@@ -53,10 +59,14 @@ public class ShowCartControl extends HttpServlet {
         for (Product o : list) {
             total = total + o.getAmount() * o.getPrice();
         }
+
+        double vat = total * 0.1;
+        double sum = total * 1.1;
+
         req.setAttribute("list", list);
         req.setAttribute("total", total);
-        req.setAttribute("vat", 0.1 * total);
-        req.setAttribute("sum", (long) 1.1 * total);
+        req.setAttribute("vat", vat);
+        req.setAttribute("sum", (long) sum);
         req.getRequestDispatcher("Cart.jsp").forward(req, resp);
 
     }
