@@ -35,44 +35,4 @@ public class CartProductControl extends HttpServlet {
 
     }
 
-//    @Override
-//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//
-//        resp.setCharacterEncoding("UTF-8");
-//        req.setCharacterEncoding("UTF-8");
-//        String productId = req.getParameter("id");
-//        HttpSession session = req.getSession();
-//
-//        List<BillProduct> listB = (List<BillProduct>) session.getAttribute("list");
-//        ProductService productService = new ProductService();
-//        Product product = productService.findProductById(Integer.parseInt(productId));
-//
-//        if (listB == null) {
-//            listB = new ArrayList<>();
-//            BillProduct billProduct = new BillProduct();
-//            billProduct.setProduct(product);
-//            billProduct.setUnitPrice(product.getPrice());
-//            billProduct.setQuantity(1);
-//            listB.add(billProduct);
-//        } else {
-//            int count = 0;
-//            for (BillProduct billProduct : listB) {
-//                if (billProduct.getProduct() == product) {
-//                    billProduct.setQuantity(billProduct.getQuantity() + 1);
-//                    count++;
-//                }
-//            }
-//            if (count == 0) {
-//                BillProduct billProduct = new BillProduct();
-//                billProduct.setProduct(product);
-//                billProduct.setQuantity(1);
-//                billProduct.setUnitPrice(product.getPrice());
-//                listB.add(billProduct);
-//            }
-//        }
-//        session.setAttribute("list", listB);
-//        resp.sendRedirect("print");
-//
-//    }
-
 }
