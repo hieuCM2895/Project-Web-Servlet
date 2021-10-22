@@ -42,10 +42,10 @@ public class SubCartControl extends HttpServlet {
             int check = 0;
 
             for (int i = 0; i < ids.length; i++) {
-                if (ids[i].equals(id)) {
+                if (id.equals(ids[i])) {
                     check++;
                 }
-                if (check != 1 || !ids[i].equals(id)) {
+                if (check != 1 || !id.equals(ids[i])) {
                     if (txtOutPut.isEmpty()) {
                         txtOutPut = ids[i];
                     } else {
