@@ -42,9 +42,11 @@ public class ManagerProduct extends HttpServlet {
         CategoryService categoryService = new CategoryService();
         List<Category> listC = categoryService.findAllCategory();
 
+        int tag = Integer.parseInt(currentNumberPage);
+
         req.setAttribute("listC", listC);
         req.setAttribute("listP", listP);
-        req.setAttribute("tag", Integer.parseInt(currentNumberPage));
+        req.setAttribute("tag", tag);
         req.setAttribute("numberPage", countPage);
         req.setAttribute("total", total);
 
