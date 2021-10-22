@@ -21,7 +21,19 @@ public class DeleteControl extends HttpServlet {
         String tag = req.getParameter("tag");
         if (result) {
             req.getRequestDispatcher("paging?id=" + tag).forward(req, resp);
+        } else {
+
+            String note = "Can't delete product by id = " + deleteId;
+            req.setAttribute("pid", deleteId);
+            req.setAttribute("note", note);
+            req.getRequestDispatcher("paging?id=" + tag).forward(req, resp);
+
         }
 
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.sendRedirect("paging?id=1");
     }
 }
