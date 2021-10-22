@@ -1,5 +1,7 @@
 package com.example.controller1;
 
+import com.mysql.cj.util.StringUtils;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -17,14 +19,21 @@ public class RemoveProductCartControl extends HttpServlet {
         String id = req.getParameter("id");
         Cookie arr[] = req.getCookies();
         String result = "";
+
         for (Cookie o : arr) {
-            if (o.getName().equals("cart")) {
-                String txt[] = o.getValue().split("-");
-                o.setMaxAge(0);
-                resp.addCookie(o);
-                for (String s : txt) {
-                    if (!s.equals(id)) {
-                        result += s + "-";
+
+            if ("cart".equals(o.getName())) {
+
+                if (!StringUtils.isNullOrEmpty(o.getValue())) {
+
+                    String txt[] = o.getValue().split("-");
+                    o.setMaxAge(0);
+                    resp.addCookie(o);
+
+                    for (String s : txt) {
+                        if (!id.equals(s)) {
+                            result += s + "-";
+                        }
                     }
                 }
             }
