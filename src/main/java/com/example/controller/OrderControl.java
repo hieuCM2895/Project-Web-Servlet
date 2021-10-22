@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.model.Account;
 import com.example.model.Product;
 import com.example.service.ProductService;
+import com.mysql.cj.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,13 +24,19 @@ public class OrderControl extends HttpServlet {
         List<Product> list = new ArrayList<>();
         ProductService productService = new ProductService();
         for (Cookie o : arr) {
-            if (o.getName().equals("id")) {
-                String txt[] = o.getValue().split("-");
-                for (String s : txt) {
-                    if (s.equals("")) {
-                        continue;
+
+            if ("id".equals(o.getName())) {
+
+                if (!StringUtils.isNullOrEmpty(o.getValue())) {
+
+                    String txt[] = o.getValue().split("-");
+
+                    for (String s : txt) {
+                        if ("".equals(s)) {
+                            continue;
+                        }
+                        list.add(productService.findProductById(Integer.parseInt(s)));
                     }
-                    list.add(productService.findProductById(Integer.parseInt(s)));
                 }
             }
         }
