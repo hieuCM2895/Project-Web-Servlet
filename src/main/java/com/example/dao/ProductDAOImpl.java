@@ -12,303 +12,218 @@ import java.util.List;
 
 public class ProductDAOImpl extends AbstractDAO<Product, Object> {
 
-    public Product findNewProduct() {
+    private static ProductDAOImpl productDAO = null;
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+    private ProductDAOImpl() {}
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Product> query = builder.createQuery(Product.class);
-            Root<Product> root = query.from(Product.class);
+    public static ProductDAOImpl getInstance() {
+        if (productDAO == null)
+            productDAO = new ProductDAOImpl();
+        return productDAO;
+    }
 
-            query.select(root).orderBy(builder.desc(root.get("id")));
+    public Product findNewProduct() throws Exception{
+        
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            return session.createQuery(query).setMaxResults(1).getSingleResult();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Product> query = builder.createQuery(Product.class);
+        Root<Product> root = query.from(Product.class);
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        return null;
+        query.select(root).orderBy(builder.desc(root.get("id")));
+
+        return session.createQuery(query).setMaxResults(1).getSingleResult();
 
     }
 
-    public Product findNewProductByCategoryId(int categoryId) {
+    public Product findNewProductByCategoryId(int categoryId) throws Exception {
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Product> query = builder.createQuery(Product.class);
-            Root<Product> root = query.from(Product.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Product> query = builder.createQuery(Product.class);
+        Root<Product> root = query.from(Product.class);
 
-            query.select(root).orderBy(builder.desc(root.get("id")));
-            query.where(builder.equal(root.get("category").get("id"), categoryId));
+        query.select(root).orderBy(builder.desc(root.get("id")));
+        query.where(builder.equal(root.get("category").get("id"), categoryId));
 
-            return session.createQuery(query).setMaxResults(1).setCacheable(true).getSingleResult();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        return null;
+        return session.createQuery(query).setMaxResults(1).setCacheable(true).getSingleResult();
 
     }
 
-    public List<Product> findListProductByCategoryID(int categoryId) {
+    public List<Product> findListProductByCategoryID(int categoryId) throws Exception {
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Product> query = builder.createQuery(Product.class);
-            Root<Product> root = query.from(Product.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Product> query = builder.createQuery(Product.class);
+        Root<Product> root = query.from(Product.class);
 
-            query.select(root).where(builder.equal(root.get("category").get("id"), categoryId));
+        query.select(root).where(builder.equal(root.get("category").get("id"), categoryId));
 
-            return session.createQuery(query).setCacheable(true).getResultList();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return session.createQuery(query).setCacheable(true).getResultList();
 
     }
 
-    public List<Product> searchProductByName(String txt) {
+    public List<Product> searchProductByName(String txt) throws Exception {
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Product> query = builder.createQuery(Product.class);
-            Root<Product> root = query.from(Product.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Product> query = builder.createQuery(Product.class);
+        Root<Product> root = query.from(Product.class);
 
-            query.select(root).where(builder.like(root.get("name"), "%" + txt + "%"));
+        query.select(root).where(builder.like(root.get("name"), "%" + txt + "%"));
 
-            return session.createQuery(query).setCacheable(true).getResultList();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return session.createQuery(query).setCacheable(true).getResultList();
 
     }
 
-    public List<Product> searchProductByAccountID(int accountId, int currentNumberPage, int pageSize) {
+    public List<Product> searchProductByAccountID(int accountId, int currentNumberPage, int pageSize) throws Exception {
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Product> query = builder.createQuery(Product.class);
-            Root<Product> root = query.from(Product.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Product> query = builder.createQuery(Product.class);
+        Root<Product> root = query.from(Product.class);
 
-            query.select(root).where(builder.equal(root.get("account").get("id"), accountId))
-                                .orderBy(builder.asc(root.get("id")));
+        query.select(root).where(builder.equal(root.get("account").get("id"), accountId))
+                .orderBy(builder.asc(root.get("id")));
 
-            Query query1 = session.createQuery(query).setCacheable(true);
-            query1.setFirstResult((currentNumberPage - 1) * pageSize);
-            query1.setMaxResults(pageSize);
+        Query query1 = session.createQuery(query).setCacheable(true);
+        query1.setFirstResult((currentNumberPage - 1) * pageSize);
+        query1.setMaxResults(pageSize);
 
-            return query1.getResultList();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return query1.getResultList();
 
     }
 
-    public List<Product> searchProductByAccountID(int currentNumberPage, int pageSize) {
+    public List<Product> searchProductByAccountID(int currentNumberPage, int pageSize) throws Exception {
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Product> query = builder.createQuery(Product.class);
-            Root<Product> root = query.from(Product.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Product> query = builder.createQuery(Product.class);
+        Root<Product> root = query.from(Product.class);
 
-            query.select(root).orderBy(builder.asc(root.get("id")));
+        query.select(root).orderBy(builder.asc(root.get("id")));
 
-            Query query1 = session.createQuery(query).setCacheable(true);
-            query1.setFirstResult((currentNumberPage - 1) * pageSize);
-            query1.setMaxResults(pageSize);
+        Query query1 = session.createQuery(query).setCacheable(true);
+        query1.setFirstResult((currentNumberPage - 1) * pageSize);
+        query1.setMaxResults(pageSize);
 
-            return query1.getResultList();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return query1.getResultList();
 
     }
 
     // category
 
-    public List<Product> searchProductByCategoryId(int categoryId ,int currentNumberPage, int pageSize) {
+    public List<Product> searchProductByCategoryId(int categoryId, int currentNumberPage, int pageSize) throws Exception{
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Product> query = builder.createQuery(Product.class);
-            Root<Product> root = query.from(Product.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Product> query = builder.createQuery(Product.class);
+        Root<Product> root = query.from(Product.class);
 
-            query.select(root).where(builder.equal(root.get("category").get("id"), categoryId))
-                    .orderBy(builder.asc(root.get("id")));
+        query.select(root).where(builder.equal(root.get("category").get("id"), categoryId))
+                .orderBy(builder.asc(root.get("id")));
 
-            Query query1 = session.createQuery(query).setCacheable(true);
-            query1.setFirstResult((currentNumberPage - 1) * pageSize);
-            query1.setMaxResults(pageSize);
+        Query query1 = session.createQuery(query).setCacheable(true);
+        query1.setFirstResult((currentNumberPage - 1) * pageSize);
+        query1.setMaxResults(pageSize);
 
-            return query1.getResultList();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return query1.getResultList();
 
     }
 
-    public Object getNumberSellProductByAccountID(int accountId) {
+    public Object getNumberSellProductByAccountID(int accountId) throws Exception {
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Object> query = builder.createQuery(Object.class);
-            Root<Product> root = query.from(Product.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Object> query = builder.createQuery(Object.class);
+        Root<Product> root = query.from(Product.class);
 
-            query.select(builder.count(root)).where(builder.equal(root.get("account").get("id"), accountId));
+        query.select(builder.count(root)).where(builder.equal(root.get("account").get("id"), accountId));
 
-            return session.createQuery(query).uniqueResult();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return session.createQuery(query).uniqueResult();
 
     }
 
-    public Object getNumberSellProduct() {
+    public Object getNumberSellProduct() throws Exception {
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Object> query = builder.createQuery(Object.class);
-            Root<Product> root = query.from(Product.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Object> query = builder.createQuery(Object.class);
+        Root<Product> root = query.from(Product.class);
 
-            query.select(builder.count(root));
+        query.select(builder.count(root));
 
-            return session.createQuery(query).uniqueResult();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return session.createQuery(query).uniqueResult();
 
     }
 
-    public Object getNumberSellProductByCategory(int categoryId) {
+    public Object getNumberSellProductByCategory(int categoryId) throws Exception {
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Object> query = builder.createQuery(Object.class);
-            Root<Product> root = query.from(Product.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Object> query = builder.createQuery(Object.class);
+        Root<Product> root = query.from(Product.class);
 
-            query.select(builder.count(root)).where(builder.equal(root.get("category").get("id"), categoryId));
+        query.select(builder.count(root)).where(builder.equal(root.get("category").get("id"), categoryId));
 
-            return session.createQuery(query).setCacheable(true).uniqueResult();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return session.createQuery(query).setCacheable(true).uniqueResult();
 
     }
 
-    public List<Product> searchProductByAmount(int amount) {
+    public List<Product> searchProductByAmount(int amount) throws Exception {
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Product> query = builder.createQuery(Product.class);
-            Root<Product> root = query.from(Product.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Product> query = builder.createQuery(Product.class);
+        Root<Product> root = query.from(Product.class);
 
-            query.select(root).orderBy(builder.asc(root.get("id")));
+        query.select(root).orderBy(builder.asc(root.get("id")));
 
-            Query query1 = session.createQuery(query).setCacheable(true);
-            query1.setMaxResults(amount);
+        Query query1 = session.createQuery(query).setCacheable(true);
+        query1.setMaxResults(amount);
 
-            return query1.getResultList();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return query1.getResultList();
 
     }
 
-    public List<Product> searchLastProductByAmount(int amount) {
+    public List<Product> searchLastProductByAmount(int amount) throws Exception {
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Product> query = builder.createQuery(Product.class);
-            Root<Product> root = query.from(Product.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Product> query = builder.createQuery(Product.class);
+        Root<Product> root = query.from(Product.class);
 
-            query.select(root).orderBy(builder.desc(root.get("id")));
+        query.select(root).orderBy(builder.desc(root.get("id")));
 
-            Query query1 = session.createQuery(query).setCacheable(true);
-            query1.setMaxResults(amount);
+        Query query1 = session.createQuery(query).setCacheable(true);
+        query1.setMaxResults(amount);
 
-            return query1.getResultList();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return query1.getResultList();
 
     }
 
-    public Object findCategoryIdByProductId(int productId) {
+    public Object findCategoryIdByProductId(int productId) throws Exception {
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Object> query = builder.createQuery(Object.class);
-            Root<Product> root = query.from(Product.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Object> query = builder.createQuery(Object.class);
+        Root<Product> root = query.from(Product.class);
 
-            query.select(root.get("category").get("id")).where(builder.equal(root.get("id"), productId));
+        query.select(root.get("category").get("id")).where(builder.equal(root.get("id"), productId));
 
-            return session.createQuery(query).uniqueResult();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
-
-    }
-
-    public static void main(String[] args) {
-        ProductDAOImpl productDAO = new ProductDAOImpl();
-        List<Product> product = productDAO.searchLastProductByAmount(6);
-        for (Product product1 : product) {
-            System.out.println(product1);
-        }
+        return session.createQuery(query).uniqueResult();
 
     }
 
