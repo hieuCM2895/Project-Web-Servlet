@@ -10,14 +10,14 @@ import java.util.List;
 
 public class CategoryService {
 
-    private CategoryDTO categoryDTO = new CategoryDTO();
-    private CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
+    private CategoryDTO categoryDTO = CategoryDTO.getInstance();
+    private CategoryDAOImpl categoryDAO = CategoryDAOImpl.getInstance();
 
-    public Category findCategoryById(int categoryId) {
+    public Category findCategoryById(int categoryId) throws Exception {
         return categoryDTO.categoryDTO(categoryDAO.findById(Category.class, categoryId));
     }
 
-    public List<Category> findAllCategory() {
+    public List<Category> findAllCategory() throws Exception {
 
         List<Category> listOfCategory = categoryDAO.findAll(Category.class);
         List<Category> listOfCategoryDTO = new ArrayList<>();

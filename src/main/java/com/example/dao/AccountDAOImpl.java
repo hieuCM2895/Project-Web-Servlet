@@ -11,6 +11,16 @@ import javax.persistence.criteria.Root;
 
 public class AccountDAOImpl extends AbstractDAO<Account, Object> {
 
+    private static AccountDAOImpl accountDAO = null;
+
+    private AccountDAOImpl() {}
+
+    public static AccountDAOImpl getInstance() {
+        if (accountDAO == null)
+            accountDAO = new AccountDAOImpl();
+        return accountDAO;
+    }
+
     public Account loginByUserAndPassword(String userName, String pass) throws Exception {
 
         Session session = HibernateUtil.getSesstionFactory().openSession();

@@ -12,6 +12,16 @@ import java.util.List;
 
 public class ProductDAOImpl extends AbstractDAO<Product, Object> {
 
+    private static ProductDAOImpl productDAO = null;
+
+    private ProductDAOImpl() {}
+
+    public static ProductDAOImpl getInstance() {
+        if (productDAO == null)
+            productDAO = new ProductDAOImpl();
+        return productDAO;
+    }
+
     public Product findNewProduct() throws Exception{
         
         Session session = HibernateUtil.getSesstionFactory().openSession();

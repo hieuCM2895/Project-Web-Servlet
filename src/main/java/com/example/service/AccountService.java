@@ -6,18 +6,18 @@ import com.example.model.Account;
 
 public class AccountService {
 
-    private AccountDAOImpl accountDAO = new AccountDAOImpl();
-    private AccountDTO accountDTO = new AccountDTO();
+    private AccountDAOImpl accountDAO = AccountDAOImpl.getInstance();
+    private AccountDTO accountDTO = AccountDTO.getInstance();
 
-    public Account loginByUserAndPassword(String userName, String pass) {
+    public Account loginByUserAndPassword(String userName, String pass) throws Exception {
         return accountDAO.loginByUserAndPassword(userName, pass);
     }
 
-    public boolean checkUserExits(String userName) {
+    public boolean checkUserExits(String userName) throws Exception {
         return accountDAO.checkUserExits(userName);
     }
 
-    public boolean addNewAccount(String userName, String password) {
+    public boolean addNewAccount(String userName, String password) throws Exception {
 
         Account account = new Account();
         account.setUser(userName);

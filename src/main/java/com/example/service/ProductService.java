@@ -9,22 +9,22 @@ import java.util.List;
 
 public class ProductService {
 
-    private ProductDAOImpl productDAO = new ProductDAOImpl();
-    private ProductDTO productDTO = new ProductDTO();
+    private ProductDAOImpl productDAO = ProductDAOImpl.getInstance();
+    private ProductDTO productDTO = ProductDTO.getInstance();
 
-    public boolean deleteProductById(int productId) {
+    public boolean deleteProductById(int productId) throws Exception {
         return productDAO.delete(productDAO.findById(Product.class, productId));
     }
 
-    public boolean addNewProduct(Product product) {
+    public boolean addNewProduct(Product product) throws Exception {
         return productDAO.save(product);
     }
 
-    public boolean updateProduct(Product product) {
+    public boolean updateProduct(Product product) throws Exception {
         return productDAO.update(product);
     }
 
-    public List<Product> findAllProduct() {
+    public List<Product> findAllProduct() throws Exception {
 
         List<Product> listOfProduct = productDAO.findAll(Product.class);
         List<Product> listOfProductDTO = new ArrayList<>();
@@ -35,19 +35,19 @@ public class ProductService {
 
     }
 
-    public Product findNewProduct() {
+    public Product findNewProduct() throws Exception {
         return productDTO.productDTO(productDAO.findNewProduct());
     }
 
-    public Product findProductById(int productId) {
+    public Product findProductById(int productId) throws Exception {
         return productDTO.productDTO(productDAO.findById(Product.class, productId));
     }
 
-    public Product findNewProductByCategoryId(int categoryId) {
+    public Product findNewProductByCategoryId(int categoryId) throws Exception {
         return productDTO.productDTO(productDAO.findNewProductByCategoryId(categoryId));
     }
 
-    public List<Product> searchProductByName(String txt) {
+    public List<Product> searchProductByName(String txt) throws Exception {
 
         List<Product> listOfProduct = productDAO.searchProductByName(txt);
         List<Product> listOfProductDTO = new ArrayList<>();
@@ -58,7 +58,7 @@ public class ProductService {
 
     }
 
-    public List<Product> searchProductByAccountID(int accountId, int currentNumberPage, int pageSize) {
+    public List<Product> searchProductByAccountID(int accountId, int currentNumberPage, int pageSize) throws Exception {
 
         List<Product> listOfProduct = productDAO.searchProductByAccountID(accountId, currentNumberPage, pageSize);
         List<Product> listOfProductDTO = new ArrayList<>();
@@ -69,7 +69,7 @@ public class ProductService {
 
     }
 
-    public List<Product> searchProductByAccountID(int currentNumberPage, int pageSize) {
+    public List<Product> searchProductByAccountID(int currentNumberPage, int pageSize) throws Exception {
 
         List<Product> listOfProduct = productDAO.searchProductByAccountID(currentNumberPage, pageSize);
         List<Product> listOfProductDTO = new ArrayList<>();
@@ -80,7 +80,7 @@ public class ProductService {
 
     }
 
-    public List<Product> searchProductByCategoryId(int categoryId ,int currentNumberPage, int pageSize) {
+    public List<Product> searchProductByCategoryId(int categoryId ,int currentNumberPage, int pageSize) throws Exception {
 
         List<Product> listOfProduct = productDAO.searchProductByCategoryId(categoryId, currentNumberPage, pageSize);
         List<Product> listOfProductDTO = new ArrayList<>();
@@ -91,7 +91,7 @@ public class ProductService {
 
     }
 
-    public List<Product> findListProductByCategoryID(int categoryId) {
+    public List<Product> findListProductByCategoryID(int categoryId) throws Exception {
 
         List<Product> listOfProduct = productDAO.findListProductByCategoryID(categoryId);
         List<Product> listOfProductDTO = new ArrayList<>();
@@ -102,19 +102,19 @@ public class ProductService {
 
     }
 
-    public long getNumberPage(int accountId) {
+    public long getNumberPage(int accountId) throws Exception {
         return (long) productDAO.getNumberSellProductByAccountID(accountId);
     }
 
-    public long getNumberPageByProduct() {
+    public long getNumberPageByProduct() throws Exception {
         return (long) productDAO.getNumberSellProduct();
     }
 
-    public long getNumberPageByProduct(int categoryId) {
+    public long getNumberPageByProduct(int categoryId) throws Exception {
         return (long) productDAO.getNumberSellProductByCategory(categoryId);
     }
 
-    public List<Product> searchProductByAmount(int amount) {
+    public List<Product> searchProductByAmount(int amount) throws Exception {
 
         List<Product> listOfProduct = productDAO.searchProductByAmount(amount);
         List<Product> listDTO = new ArrayList<>();
@@ -125,7 +125,7 @@ public class ProductService {
 
     }
 
-    public List<Product> searchLastProductByAmount(int amount) {
+    public List<Product> searchLastProductByAmount(int amount) throws Exception {
 
         List<Product> listOfProduct = productDAO.searchLastProductByAmount(amount);
         List<Product> listDTO = new ArrayList<>();
@@ -136,13 +136,8 @@ public class ProductService {
 
     }
 
-    public Object findCategoryIdByProductId(int productId) {
+    public Object findCategoryIdByProductId(int productId) throws Exception {
         return productDAO.findCategoryIdByProductId(productId);
     }
 
-    public static void main(String[] args) {
-        ProductService productService = new ProductService();
-        long list = productService.getNumberPage(1);
-        System.out.println(list);
-    }
 }
