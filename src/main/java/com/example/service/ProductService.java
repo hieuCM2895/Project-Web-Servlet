@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.dao.ProductDAOImpl;
+import com.example.dto.AccountDTO;
 import com.example.dto.ProductDTO;
 import com.example.model.Product;
 
@@ -11,6 +12,16 @@ public class ProductService {
 
     private ProductDAOImpl productDAO = ProductDAOImpl.getInstance();
     private ProductDTO productDTO = ProductDTO.getInstance();
+
+    private static ProductService productService = null;
+
+    private ProductService() {}
+
+    public static ProductService getInstance() {
+        if (productService == null)
+            productService = new ProductService();
+        return productService;
+    }
 
     public boolean deleteProductById(int productId) throws Exception {
         return productDAO.delete(productDAO.findById(Product.class, productId));

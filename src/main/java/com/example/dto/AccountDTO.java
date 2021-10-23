@@ -1,6 +1,5 @@
 package com.example.dto;
 
-import com.example.dao.AccountDAOImpl;
 import com.example.model.Account;
 
 public class AccountDTO {
