@@ -214,7 +214,7 @@ public class ProductDAOImpl extends AbstractDAO<Product, Object> {
         query.select(root.get("category").get("id")).where(builder.equal(root.get("id"), productId));
 
         return session.createQuery(query).uniqueResult();
-        
+
     }
 
 }
