@@ -11,55 +11,37 @@ import javax.persistence.criteria.Root;
 
 public class AccountDAOImpl extends AbstractDAO<Account, Object> {
 
-    public Account loginByUserAndPassword(String userName, String pass) {
+    public Account loginByUserAndPassword(String userName, String pass) throws Exception {
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Account> query = builder.createQuery(Account.class);
-            Root<Account> root = query.from(Account.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Account> query = builder.createQuery(Account.class);
+        Root<Account> root = query.from(Account.class);
 
-            Predicate user = builder.like(root.get("user"), userName);
-            Predicate password = builder.like(root.get("password"), pass);
+        Predicate user = builder.like(root.get("user"), userName);
+        Predicate password = builder.like(root.get("password"), pass);
 
-            query.select(root).where(builder.and(user, password));
+        query.select(root).where(builder.and(user, password));
 
-            return session.createQuery(query).getSingleResult();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return session.createQuery(query).getSingleResult();
 
     }
 
-    public boolean checkUserExits(String userName) {
+    public boolean checkUserExits(String userName) throws Exception {
 
-        try {
-            Session session = HibernateUtil.getSesstionFactory().openSession();
+        Session session = HibernateUtil.getSesstionFactory().openSession();
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Account> query = builder.createQuery(Account.class);
-            Root<Account> root = query.from(Account.class);
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Account> query = builder.createQuery(Account.class);
+        Root<Account> root = query.from(Account.class);
 
-            Predicate user = builder.like(root.get("user"), userName);
+        Predicate user = builder.like(root.get("user"), userName);
 
-            query.select(root).where(user);
+        query.select(root).where(user);
 
-            return session.createQuery(query) != null;
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        return session.createQuery(query) != null;
 
     }
 
-    public static void main(String[] args) {
-
-        AccountDAOImpl accountDAO = new AccountDAOImpl();
-        System.out.println(accountDAO.loginByUserAndPassword("Hieu2893", "123"));
-
-    }
 }
