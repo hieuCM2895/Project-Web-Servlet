@@ -1,8 +1,6 @@
 package com.example.service;
 
 import com.example.dao.CategoryDAOImpl;
-import com.example.dao.ProductDAOImpl;
-import com.example.dto.AccountDTO;
 import com.example.dto.CategoryDTO;
 import com.example.model.Category;
 
