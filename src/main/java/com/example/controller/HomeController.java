@@ -4,7 +4,11 @@ import com.example.model.Category;
 import com.example.model.Product;
 import com.example.service.CategoryService;
 import com.example.service.ProductService;
+<<<<<<< HEAD
 import com.example.validation.StringValidation;
+=======
+import com.mysql.cj.util.StringUtils;
+>>>>>>> controller1
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,12 +33,23 @@ public class HomeController extends HttpServlet {
             CategoryService categoryService = CategoryService.getInstance();
             List<Category> listC = categoryService.findAllCategory();
 
+<<<<<<< HEAD
             Product newProduct = productService.findNewProduct();
 
             Cookie arr[] = req.getCookies();
             int amount = 0;
             for (Cookie o : arr) {
                 if (StringValidation.validationString(o.getName(), StringValidation.predicate, o.getValue())) {
+=======
+        Cookie arr[] = req.getCookies();
+        int amount = 0;
+        for (Cookie o : arr) {
+
+            if ("id".equals(o.getName())) {
+
+                if (!StringUtils.isNullOrEmpty(o.getValue())) {
+
+>>>>>>> controller1
                     String[] txt = o.getValue().split("-");
                     for (String s : txt) {
                         if (!"".equals(s)) {

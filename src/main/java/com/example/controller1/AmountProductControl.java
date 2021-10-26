@@ -1,6 +1,10 @@
 package com.example.controller1;
 
+<<<<<<< HEAD
 import com.example.validation.StringValidation;
+=======
+import com.mysql.cj.util.StringUtils;
+>>>>>>> controller1
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +25,7 @@ public class AmountProductControl extends HttpServlet {
             String amount = req.getParameter("amount");
             String productId = req.getParameter("id");
 
+<<<<<<< HEAD
             if (Integer.parseInt(amount) <= 0) {
                 amount = "1";
             }
@@ -31,12 +36,23 @@ public class AmountProductControl extends HttpServlet {
             for (Cookie o : arr) {
 
                 if (StringValidation.validationString(o.getName(), StringValidation.predicate2, o.getValue())) {
+=======
+        Cookie arr[] = req.getCookies();
+        String result = "";
+
+        for (Cookie o : arr) {
+
+            if ("cart".equals(o.getName())) {
+
+                if (!StringUtils.isNullOrEmpty(o.getValue())) {
+>>>>>>> controller1
 
                     String txt[] = o.getValue().split("-");
                     o.setMaxAge(0);
                     resp.addCookie(o);
                     int flag = 0;
                     for (String s : txt) {
+<<<<<<< HEAD
 
                         if (!productId.equals(s)) {
                             result += s + "-";
@@ -46,6 +62,15 @@ public class AmountProductControl extends HttpServlet {
                             flag++;
                             for (int i = 1; i <= Integer.parseInt(amount); i++) {
                                 result = result + productId + "-";
+=======
+                        if (!productId.equals(s)) {
+                            result += s + "-";
+                        }
+                        if (productId.equals(s) && flag == 0) {
+                            flag++;
+                            for (int i = 1; i <= Integer.parseInt(amount); i++) {
+                                result = result + productId + "-" ;
+>>>>>>> controller1
                             }
                         }
 

@@ -44,7 +44,17 @@ public class ManagerProduct extends HttpServlet {
             CategoryService categoryService = CategoryService.getInstance();
             List<Category> listC = categoryService.findAllCategory();
 
+<<<<<<< HEAD
             int currentPage = Integer.parseInt(currentNumberPage);
+=======
+        int tag = Integer.parseInt(currentNumberPage);
+
+        req.setAttribute("listC", listC);
+        req.setAttribute("listP", listP);
+        req.setAttribute("tag", tag);
+        req.setAttribute("numberPage", countPage);
+        req.setAttribute("total", total);
+>>>>>>> controller1
 
             req.setAttribute("listC", listC);
             req.setAttribute("listP", listP);

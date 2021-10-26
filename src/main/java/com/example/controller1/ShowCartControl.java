@@ -2,7 +2,11 @@ package com.example.controller1;
 
 import com.example.model.Product;
 import com.example.service.ProductService;
+<<<<<<< HEAD
 import com.example.validation.StringValidation;
+=======
+import com.mysql.cj.util.StringUtils;
+>>>>>>> controller1
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +26,7 @@ public class ShowCartControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+<<<<<<< HEAD
         try {
 
             Cookie arr[] = req.getCookies();
@@ -39,6 +44,26 @@ public class ShowCartControl extends HttpServlet {
 
                     for (String s : txt) {
 
+=======
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        Cookie arr[] = req.getCookies();
+        List<Product> list = new ArrayList<>();
+
+        ProductService productService = new ProductService();
+
+        for (Cookie o : arr) {
+
+            if ("cart".equals(o.getName())) {
+
+                if (!StringUtils.isNullOrEmpty(o.getValue())) {
+
+                    String txt[] = o.getValue().split("-");
+                    Set<Integer> listNumber = new HashSet<>();
+
+                    for (String s : txt) {
+                        
+>>>>>>> controller1
                         if ("".equals(s)) {
                             continue;
                         }

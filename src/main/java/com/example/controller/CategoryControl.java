@@ -47,6 +47,7 @@ public class CategoryControl extends HttpServlet {
 
             for (Cookie o : arr) {
 
+<<<<<<< HEAD
                 if (StringValidation.validationString(o.getName(), StringValidation.predicate, o.getValue())) {
 
                     String[] txt = o.getValue().split("-");
@@ -54,6 +55,16 @@ public class CategoryControl extends HttpServlet {
                         if (!"".equals(s)) {
                             amount++;
                         }
+=======
+        Cookie arr[] = req.getCookies();
+        int amount = 0;
+        for (Cookie o : arr) {
+            if ("id".equals(o.getName())) {
+                String[] txt = o.getValue().split("-");
+                for (String s : txt) {
+                    if (!s.equals("")) {
+                        amount++;
+>>>>>>> controller1
                     }
                 }
             }

@@ -1,6 +1,10 @@
 package com.example.controller;
 
+<<<<<<< HEAD
 import com.example.validation.StringValidation;
+=======
+import com.mysql.cj.util.StringUtils;
+>>>>>>> controller1
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +20,7 @@ public class RemoveProductCartControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+<<<<<<< HEAD
         try {
 
             String id = req.getParameter("id");
@@ -25,6 +30,16 @@ public class RemoveProductCartControl extends HttpServlet {
             for (Cookie o : arr) {
 
                 if (StringValidation.validationString(o.getName(), StringValidation.predicate, o.getValue())) {
+=======
+        String id = req.getParameter("id");
+        Cookie arr[] = req.getCookies();
+        String result = "";
+        for (Cookie o : arr) {
+
+            if ("id".equals(o.getName())) {
+
+                if (!StringUtils.isNullOrEmpty(o.getValue())) {
+>>>>>>> controller1
 
                     String txt[] = o.getValue().split("-");
                     o.setMaxAge(0);
